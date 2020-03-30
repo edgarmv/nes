@@ -83,17 +83,30 @@ class NESFileHeader():
 class NESFile():
     header = None
     trainer = None
+    prg_rom = None
+    prg_rom_offset = None
+    trainer = None
+    chr_rom = None
 
     def check_file(self, filename):
         if not os.path.exists(filename):
             print("File does not exist: {}".format(filename), file=sys.stderr)
             sys.exit(1)
 
+    def update_mapper(self):
+        if self.header.mapper != 0:
+            print("Mapper not supported: {}".format(self.header.mapper),
+                  file=sys.stderr)
+            sys.exit(1)
+
+        self.prg_rom_offset = 0x8000
+
     def __init__(self, filename):
         self.check_file(filename)
 
         with open(filename, "rb") as nes_file:
             self.header = NESFileHeader(nes_file.read(NES_FILE_HEADER_SIZE))
+            self.update_mapper()
 
             if self.header.trainer:
                 self.trainer = nes_file.read(NES_FILE_TRAINER_SIZE)

@@ -36,7 +36,8 @@ def main():
         address = 0
         while address < len(nes_file.prg_rom):
             instruction = instructions.decode(nes_file.prg_rom, address)
-            print("${:04x}: {}".format(address, instruction))
+            mapped_address = nes_file.prg_rom_offset + address
+            print("${:04x}: {}".format(mapped_address, instruction))
             address += len(instruction.byte_list)
 
 
