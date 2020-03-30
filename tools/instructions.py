@@ -18,6 +18,13 @@ OPCODES = {
             "addressing_mode": AddressingMode.RELATIVE,
             "num_bytes": 2,
         },
+        0x20: {
+            "mnemonic": "JSR ${:04X}",
+            "full_name": "Jump to SubRoutine",
+            "effect": "Stack = PC-1, Update PC",
+            "addressing_mode": AddressingMode.ABSOLUTE,
+            "num_bytes": 3,
+        },
         0x78: {
             "mnemonic": "SEI",
             "full_name": "SEt Interrupt disable",
@@ -67,6 +74,13 @@ OPCODES = {
             "addressing_mode": AddressingMode.ABSOLUTE,
             "num_bytes": 3,
         },
+        0xB0: {
+            "mnemonic": "BCS ${:d}",
+            "full_name": "Branch on Carry Set",
+            "effect": "IF [C == 1]; Update PC",
+            "addressing_mode": AddressingMode.RELATIVE,
+            "num_bytes": 2,
+        },
         0xBD: {
             "mnemonic": "LDA ${:04X},X",
             "full_name": "LoaD Accumulator",
@@ -81,6 +95,20 @@ OPCODES = {
             "addressing_mode": AddressingMode.IMMEDIATE,
             "num_bytes": 2,
         },
+        0xCA: {
+            "mnemonic": "DEX",
+            "full_name": "DEcrement X register",
+            "effect": "X,Z,N = X-1",
+            "addressing_mode": AddressingMode.IMPLIED,
+            "num_bytes": 1,
+        },
+        0xD0: {
+            "mnemonic": "BNE ${:d}",
+            "full_name": "Branch if Not Equal",
+            "effect": "IF [Z == 0]; Update PC",
+            "addressing_mode": AddressingMode.RELATIVE,
+            "num_bytes": 2,
+        },
         0xD8: {
             "mnemonic": "CLD",
             "full_name": "CLear Decimal mode",
@@ -93,7 +121,7 @@ OPCODES = {
 
 def twos_comp(val):
     if (val & (1 << 7)) != 0:
-        val -= (1 << 7)
+        val -= (1 << 8)
     return val
 
 
